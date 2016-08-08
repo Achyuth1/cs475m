@@ -1,10 +1,15 @@
 /*******************************
- *
  * CS475m Assignment 1 Basecode 
  *
- * Parag Chaudhuri, 2016
+ *Achyutha Krishna
+ *Athul AR
+ *
+ *May the force be with us
+ *May the openGL also be with us 
  *
  *******************************/
+
+
 
 #include <cmath>
 #include <cstdlib>
