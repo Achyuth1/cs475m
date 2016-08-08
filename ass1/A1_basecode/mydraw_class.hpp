@@ -23,14 +23,15 @@ public:
 class pen_t
 {
 private:
-	int size;
+	float size;
 	bool mode;
 	//Bckround color should be added?!
 	color_t pen_color;
 	color_t bgd_color;
 public:
 	pen_t();
-	~pen_t();
+	pen_t(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
+	set(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
 	
 };
 //------------------------
@@ -38,10 +39,12 @@ class fill_t
 {
 private:
 	color_t curr_color;
+	color_t bnd_color;
 	// may be boundarycolorneed to be passed
 public:
 	fill_t();
-	~fill_t();
+	fill_t(color_t _curr_color, color_t _bnd_color);
+	set
 	draw_fill();  // may OPENGL be with us//
 	
 };
