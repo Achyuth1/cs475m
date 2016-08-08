@@ -19,14 +19,63 @@ public:
   float G(void);
   float B(void);
 };
-
+//------------------------
+class pen_t
+{
+private:
+	int size;
+public:
+	pen_t();
+	~pen_t();
+	
+};
+//------------------------
+class fill_t
+{
+public:
+	fill_t();
+	~fill_t();
+	
+};
 //------------------------
 
 //point_t class
 class point_t {
+public:
+	point_t();
+	~point_t();
+	};
+//------------------------
+class line_t
+{
+public:
+	line_t();
+	~line_t();
+	
+};
+//------------------------
+class traingle_t
+{
+public:
+	traingle_t();
+	~traingle_t();
+	
+};
+//------------------------
+class drawing_t
+{
+public:
+drawing_t();
+~drawing_t();
 
 };
-
 //------------------------
-
+class canvas_t
+{
+public:
+	canvas_t();
+	~canvas_t();
+	
+};
+//------------------------
 #endif
