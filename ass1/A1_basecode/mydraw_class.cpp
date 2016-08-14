@@ -57,5 +57,5 @@ fill_t::fill_t(color_t _curr_color, color_t _bnd_color)
 	bnd_color = _bnd_color;
 }
 
-fill_t::				
+fill_t::
 //---------------------

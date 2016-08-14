@@ -44,7 +44,8 @@ private:
 public:
 	fill_t();
 	fill_t(color_t _curr_color, color_t _bnd_color);
-	set
+	set_bg(color_t _bnd_color);
+	set_curr(color_t _curr_color);
 	draw_fill();  // may OPENGL be with us//
 	
 };
@@ -56,7 +57,7 @@ private:
 	int x,y;
 public:
 	point_t();
-	~point_t();
+	point_t();
 	draw_point();
 	};
 //------------------------
