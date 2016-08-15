@@ -57,7 +57,8 @@ private:
 	int x,y;
 public:
 	point_t();
-	point_t();
+	point_t(int _x, int _y);
+	set_point(int _x, int _y);
 	draw_point();
 	};
 //------------------------
@@ -67,7 +68,8 @@ private:
 	point_t Vi,Vf;
 public:
 	line_t();
-	~line_t();
+	line_t(point_t _Vi, point_t _Vf);
+	set_line(point_t _Vi, point_t _Vf);
 	draw_line();  //BRESSEN
 	
 };
@@ -80,9 +82,9 @@ private:
 	fill_t triangle_interior;
 public:
 	triangle_t();
-	~triangle_t();
+	triangle_t(point_t _A, point_t _B, point_t _C);
+	set_triangle(point_t _A, point_t _B, point_t _C);
 	draw_triangle();
-	
 };
 //------------------------
 class drawing_t
