@@ -118,25 +118,24 @@ line_t::draw_line() //BRESSEN
 }
 //--------------------------------
 //traingle_t
-triangle_t()
+traingle_t::triangle_t()
 {
 	point_t c;
 	A = c;
 	B = c;
 	C = c;
 }
-triangle_t(point_t _A, point_t _B, point_t _C)
+traingle_t::triangle_t(point_t _A, point_t _B, point_t _C)
 {
 	A = _A;
 	B = _B;
 	C = _B;
 }
-set_triangle(point_t _A, point_t _B, point_t _C)
+traingle_t::set_triangle(point_t _A, point_t _B, point_t _C)
 {
 	A = _A;
 	B = _B;
 	C = _B;
 }	
-
-draw_triangle();
+traingle_t::draw_triangle();
 //--------------------------------
