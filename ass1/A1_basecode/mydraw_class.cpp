@@ -89,9 +89,31 @@ point_t::set_point(int _x, int _y)
 	x = _x;
 	y = _y;	
 }
-point_t::draw_point()
+point_t::draw_point(color_t c, int t = 1, color_t* buffer)
 {
 	//to be filled
+/*	GLubyte data[t][t][3];
+    for( int b = 0; b <t; b++ )
+    {
+        for( int a = 0; a < t; a++ )
+        {
+            data[a][b][0] = (GLubyte) (int) ( c.r *255 );
+            data[a][b][1] = (GLubyte) (int) ( c.g *255 );
+            data[a][b][2] = (GLubyte) (int) ( c.b *255 );
+        }
+    }
+    float _x = (float) (x- W/2)*2/W;
+    float _y = (float) (y- H/2)*2/H;
+    
+	glRasterPos2f(_x,_y);
+    glDrawPixels( t, t, GL_RGB, GL_UNSIGNED_BYTE, data);*/
+	for (int i = 0; i < t; ++i)
+	{
+		for (int j = 0; j < t; ++j)
+		{
+			buffer[i+x][j+y] = c;
+		}
+	}
 }
 
 //------------------------------
@@ -112,7 +134,7 @@ line_t::set_line(point_t _Vi, point_t _Vf)
 	Vi = _Vi;
 	Vf = _Vf;
 }
-line_t::draw_line() //BRESSEN
+line_t::draw_line(color_t c, int t = 1, color_t* buffer) //BRESSEN
 {
 	//to be filled
 }
@@ -137,5 +159,33 @@ traingle_t::set_triangle(point_t _A, point_t _B, point_t _C)
 	B = _B;
 	C = _B;
 }	
-traingle_t::draw_triangle();
+traingle_t::draw_triangle(color_t c, int t = 1, color_t* buffer)
+{
+	line_t AB(A,B), BC(B,C), CA(C,A);
+	AB.draw_line(c, t, buffer);
+	BC.draw_line(c, t, buffer);
+	CA.draw_line(c, t, buffer);	
+}
 //--------------------------------
+//drawing_t
+drawing_t::drawing_t()
+{
+
+}
+drawing_t::draw_drawing()
+{
+
+}
+//--------------------------------
+canvas_t::canvas_t()
+{
+
+}
+canvas_t::canvas_t(int h, int w, color_t BGcolor)
+{
+
+}
+canvas_t::clear_canvas()
+{
+	
+}

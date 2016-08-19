@@ -106,10 +106,10 @@ private:
 	color_t bgd_color;
 	color_t *pixels;
 public:
+	canvas_t();
 	canvas_t(int h, int w, color_t BGcolor);
 	~canvas_t();
 	clear_canvas();
-	
 };
 //------------------------
 #endif
