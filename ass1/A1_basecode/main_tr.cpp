@@ -50,9 +50,9 @@ int main( int argc, char **argv )
 	
 	int t = 5;
 
-	//ab.draw_line(d_c, t, (color_t **)buffer);
+	ab.draw_line(d_c, t, (color_t **)buffer);
 	cout<<buffer[0][0].R() << endl;
-	a.draw_point(d_c, t, buffer);
+	//a.draw_point(d_c, t, buffer);
 	cout << "54" <<endl;
    
     glutInit( &argc, argv );
