@@ -72,6 +72,14 @@ public:
 	line_t();
 	line_t(point_t _Vi, point_t _Vf);
 	void set_line(point_t _Vi, point_t _Vf);
+	point_t get_start()
+	{
+		return Vi;
+	}
+	point_t get_end()
+	{
+		return Vf;
+	}	
 	void draw_line(color_t c, int t, color_t **buffer);  //BRESSEN
 	
 };
