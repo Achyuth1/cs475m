@@ -30,7 +30,7 @@ void display( void )
 {
   //This clears the colorbuffer (current window)
   glClear(GL_COLOR_BUFFER_BIT);
-
+  
   //Flush the framebuffer to the screen
   glutSwapBuffers();
 }

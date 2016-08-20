@@ -31,7 +31,7 @@ private:
 public:
 	pen_t();
 	pen_t(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
-	set(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
+	void set(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
 	
 };
 //------------------------
@@ -44,9 +44,9 @@ private:
 public:
 	fill_t();
 	fill_t(color_t _curr_color, color_t _bnd_color);
-	set_bg(color_t _bnd_color);
-	set_curr(color_t _curr_color);
-	draw_fill();  // may OPENGL be with us//
+	void set_bg(color_t _bnd_color);
+	void set_curr(color_t _curr_color);
+	void draw_fill();  // may OPENGL be with us//
 	
 };
 //------------------------
@@ -58,8 +58,10 @@ private:
 public:
 	point_t();
 	point_t(int _x, int _y);
-	set_point(int _x, int _y);
-	draw_point();
+	int get_x();
+	int get_y();
+	void set_point(int _x, int _y);
+	void draw_point(color_t c, int t, color_t **buffer);
 	};
 //------------------------
 class line_t
@@ -69,8 +71,8 @@ private:
 public:
 	line_t();
 	line_t(point_t _Vi, point_t _Vf);
-	set_line(point_t _Vi, point_t _Vf);
-	draw_line();  //BRESSEN
+	void set_line(point_t _Vi, point_t _Vf);
+	void draw_line(color_t c, int t, color_t **buffer);  //BRESSEN
 	
 };
 //------------------------
@@ -83,8 +85,8 @@ private:
 public:
 	triangle_t();
 	triangle_t(point_t _A, point_t _B, point_t _C);
-	set_triangle(point_t _A, point_t _B, point_t _C);
-	draw_triangle();
+	void set_triangle(point_t _A, point_t _B, point_t _C);
+	void draw_triangle(color_t c, int t, color_t **buffer);
 };
 //------------------------
 class drawing_t
@@ -94,8 +96,7 @@ private:
 	triangle_t *triangles;
 public:
 drawing_t();
-~drawing_t();
-draw_drawing();
+void draw_drawing();
 };
 //------------------------
 class canvas_t
@@ -104,12 +105,11 @@ private:
 	drawing_t current_drawing;
 	int height,width;
 	color_t bgd_color;
-	color_t *pixels;
+	color_t **pixels;
 public:
 	canvas_t();
-	canvas_t(int h, int w, color_t BGcolor);
-	~canvas_t();
-	clear_canvas();
+	canvas_t(drawing_t _current_drwaing, int h, int w, color_t BGcolor, color_t **pixels_1);
+	void clear_canvas();
 };
 //------------------------
 #endif
