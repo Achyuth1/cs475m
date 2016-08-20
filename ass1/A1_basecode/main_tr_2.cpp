@@ -18,7 +18,10 @@ void display()
 	point_t a(50,50);
 	point_t b(10,10);
 	point_t c(10,50);
+	point_t d(50,60);
+
 	line_t ab(a,b);
+	line_t cd(c,d);
 	triangle_t abc(a,b,c);
 
 	color_t green(0.0,1.0,0.0);
@@ -37,12 +40,12 @@ void display()
 	}
 	
 	int t = 5;
-	a.draw_point(blue, t, buffer);
-	b.draw_point(blue, t, buffer);
-	c.draw_point(blue, t, buffer);
+//	a.draw_point(blue, t, buffer);
+//	b.draw_point(blue, t, buffer);
+//	c.draw_point(blue, t, buffer);
 	
-	//ab.draw_line(green, t, buffer);
-	abc.draw_triangle(red, t, buffer);
+	abc.draw_triangle(green, t, buffer);
+//	cd.draw_line(red,t ,buffer);
 	
     glClearColor( 0, 0, 0, 1 );
     glClear( GL_COLOR_BUFFER_BIT );

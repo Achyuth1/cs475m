@@ -215,45 +215,27 @@ triangle_t::triangle_t(point_t _A, point_t _B, point_t _C)
 {
 	A = _A;
 	B = _B;
-	C = _B;
+	C = _C;
 }
 void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C)
 {
 	A = _A;
 	B = _B;
-	C = _B;
+	C = _C;
 }	
 void triangle_t::draw_triangle(color_t c, int t, color_t **buffer)
 {
-
-	line_t AB(A,B);
-	point_t sta;
-	sta = AB.get_start();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";
-	sta = AB.get_end();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";	
-	
+	line_t AB(A,B);	
 	AB.draw_line(c, t, buffer);
-
-	//point_t B1 = point_t(60,60);
+//	cout<<"1"<<endl;
 	
 	line_t BC(B,C);
-	sta = BC.get_start();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";
-	sta = BC.get_end();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";	
-	//cout<<BC.get_line()[0]<<BC.get_line()[1]<<BC.get_line()[2]<<BC.get_line()[3];
 	BC.draw_line(c, t, buffer);
-	
-	//point_t A1= point_t(10,60);
-	//point_t C1= point_t(10,5);
+//	cout << "2" <<endl;
+
 	line_t CA(C,A);
-	sta = CA.get_start();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";
-	sta = CA.get_end();
-	cout<<sta.get_x()<<":"<<sta.get_y()<<"\n";
-	//cout<<CA.get_line()[0]<<CA.get_line()[1]<<CA.get_line()[2]<<CA.get_line()[3];
-	CA.draw_line(c, t, buffer);	
+	CA.draw_line(c, t, buffer);
+//	cout<<"3"<<endl;	
 }
 //--------------------------------
 //drawing_t
