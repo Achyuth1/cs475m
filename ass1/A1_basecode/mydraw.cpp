@@ -18,7 +18,7 @@
 
 using namespace std;
 
-
+//unsigned
 unsigned int W = 100;
 unsigned int H = 100;
 canvas_t my_canvas;

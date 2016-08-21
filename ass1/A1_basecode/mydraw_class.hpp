@@ -12,7 +12,7 @@ using namespace std;
 
 //------------------------
 //color_t class
-
+//float
 class color_t {
 private:
   float r,g,b;

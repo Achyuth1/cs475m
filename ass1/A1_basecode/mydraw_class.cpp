@@ -22,7 +22,7 @@ void color_t::set(const float _r, const float _g, const float _b)
   r=_r; g=_g; b=_b;
   return ;
 }
-
+//float
 float color_t::R(void) { return r; }
 float color_t::G(void) { return g; }
 float color_t::B(void) { return b; }
