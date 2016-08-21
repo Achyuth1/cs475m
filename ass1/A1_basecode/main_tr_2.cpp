@@ -66,6 +66,22 @@ void display()
 	glutSwapBuffers();
 }
 
+//Mouse callback
+void mouse(int button, int state, int x, int y) 
+{
+  if (state == GLUT_DOWN) 
+  {
+    if (button == GLUT_LEFT_BUTTON)
+    {
+      cout<<"button clicked"<<endl<<endl;
+      cout<<"x ::"<<x<<endl;
+      cout<<"y ::"<<y<<endl;
+    }
+  }
+   glutPostRedisplay();
+}       
+
+
 int main( int argc, char **argv )
 {
 	glutInit( &argc, argv );
@@ -73,6 +89,7 @@ int main( int argc, char **argv )
     glutInitWindowSize( W, H );
     glutCreateWindow( "GLUT" );
     glutDisplayFunc( display );
+  	glutMouseFunc( mouse );
     glutMainLoop();
     return 0;
 }

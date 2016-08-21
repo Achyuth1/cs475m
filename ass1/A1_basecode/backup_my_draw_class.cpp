@@ -31,7 +31,7 @@ float color_t::B(void) { return b; }
 //---------------------
 //pen_t methods
 
-pen_t::pen_t()
+pen_t::	pen_t()
 {
 	size = 1;
 	mode = true;
@@ -73,8 +73,7 @@ void fill_t::set_bg(color_t _bnd_color)
 	bnd_color = _bnd_color;
 }
 
-void fill_t::set_curr(color_t _curr_color)
-{
+void fill_t::set_curr(color_t _curr_color){
 	curr_color = _curr_color;
 }
 
@@ -102,7 +101,6 @@ void fill_t::draw_fill(color_t **buffer)
 	color_t newColor = this->get_curr();
 	floodFill(x,y,oldColor,newColor,buffer);
 }
-
 //-----------------------------------------
 //point_t methods
 
@@ -137,7 +135,12 @@ void point_t::draw_point(color_t c, int t, color_t **buffer)
 		//cout<<"in 1"<<endl;
 		for (int j = 0; j < t; ++j)
 		{
+			//cout<<"in2"<<endl;
+			//cout<<buffer[0][0].R() << endl;
+			//c is also color_t type
 			buffer[i+x][j+y] = c;
+			//cout << " at " << i+x << ", " << j+y << endl;
+			//cout<< buffer[i+x][j+y].R() <<"::"<<buffer[i+x][j+y].G() <<"::"<<buffer[i+x][j+y].B() <<endl;
 		}
 	}
 }
@@ -149,25 +152,18 @@ line_t::line_t()
 	point_t c;
 	Vi = c;
 	Vf = c;
-	thickness = 1;
 }
-line_t::line_t(point_t _Vi, point_t _Vf,int _thickness,color_t _color_line)
+line_t::line_t(point_t _Vi, point_t _Vf)
 {
 	Vi = _Vi;
 	Vf = _Vf;
-	thickness = _thickness;
-	color_line = _color_line;
-
 }
-void line_t::set_line(point_t _Vi, point_t _Vf,int _thickness,color_t _color_line)
+void line_t::set_line(point_t _Vi, point_t _Vf)
 {
 	Vi = _Vi;
 	Vf = _Vf;
-	thickness = _thickness;
-	color_line = _color_line;
-
 }
-void line_t::draw_line(color_t **buffer)
+void line_t::draw_line(color_t c, int t, color_t **buffer)
 {
 
   int x0 = Vi.get_x();
@@ -208,13 +204,13 @@ void line_t::draw_line(color_t **buffer)
       if (steep)      //  change the color of pixel (y,x) with color c
       {
       	temp_pt.set_point(y,x);
-      	temp_pt.draw_point(color_line, thickness, buffer);
+      	temp_pt.draw_point(c, t, buffer);
         //buffer[y][x] = c;
       }
       else            //  change the color of pixel (x,y) with color c
       {
       	temp_pt.set_point(x,y);
-      	temp_pt.draw_point(color_line, thickness, buffer);
+      	temp_pt.draw_point(c, t, buffer);
         //buffer[x][y] = c;
       }
 
@@ -234,24 +230,20 @@ triangle_t::triangle_t()
 	A = c;
 	B = c;
 	C = c;
-	thickness = 1;
 }
-triangle_t::triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color,int _thickness=1)
+triangle_t::triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color)
 {
 	A = _A;
 	B = _B;
 	C = _C;
 	border_color = _border_color;
-	thickness = _thickness;
-
 }
-void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color,int _thickness)
+void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color)
 {
 	A = _A;
 	B = _B;
 	C = _C;
 	border_color = _border_color;
-	thickness = _thickness;
 }	
 
 void triangle_t::set_internal_point_triangle(fill_t _triangle_interior)
@@ -261,18 +253,18 @@ void triangle_t::set_internal_point_triangle(fill_t _triangle_interior)
 
 
 
-void triangle_t::draw_triangle(color_t **buffer)
+void triangle_t::draw_triangle(int t, color_t **buffer)
 {
 
 	fill_t intern;
-	line_t AB(A,B,thickness,border_color);
-	AB.draw_line(buffer);
+	line_t AB(A,B);
+	AB.draw_line(border_color, t, buffer);
 	
-	line_t BC(B,C,thickness,border_color);
-	BC.draw_line(buffer);
+	line_t BC(B,C);
+	BC.draw_line(border_color, t, buffer);
 
-	line_t CA(C,A,thickness,border_color);
-	CA.draw_line(buffer);	
+	line_t CA(C,A);
+	CA.draw_line(border_color, t, buffer);	
 
 	// Setting the internal point 
 	point_t centroid;
@@ -300,20 +292,43 @@ void triangle_t::draw_triangle(color_t **buffer)
 
 //vector<line_t> lines;
 //vector<triangle_t> triangles;
-void drawing_t::draw_drawing(color_t **buffer)
+void drawing_t::draw_drawing(color_t c, int t, color_t **buffer)
 {
 	for (int i = 0; i < lines.size(); ++i)
 	{
-		lines[i].draw_line(buffer);
+		lines[i].draw_line(c, t, buffer);
 	}
 	for (int i = 0; i < triangles.size(); ++i)
 	{
-		triangles[i].draw_triangle(buffer);
+		triangles[i].draw_triangle(t, buffer);
 	}
 }
-
-//----------------------------------------------------
-// canvas_t
+//--------------------------------
+//canvas
+/*canvas_t::canvas_t()
+{
+	height = 512;
+	width = 512;
+	color_t** buffer = new color_t*[height];
+	for(int i = 0; i < height; ++i)
+	{	
+    	buffer[i] = new color_t[width];
+	}
+	bgd_color.set(0.0,0.0,0.0);
+	pixels = buffer;
+}*/
+color_t** canvas_t::get_buffer()
+{
+	return pixels;
+}
+void canvas_t::set_canvas(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer)
+{
+	current_drawing = _current_drawing;
+	height = _height;
+	width = _width;
+	bgd_color = _bgd_color;
+	pixels = buffer;
+}
 void canvas_t::clear_canvas()
 {
 	for (int i = 0; i < height; ++i)
@@ -324,20 +339,9 @@ void canvas_t::clear_canvas()
 		}
 	}	
 }
-color_t** canvas_t::get_buffer()
-{
-	return pixels;
-}
-void canvas_t::draw_current_drawing()
-{
-	current_drawing.draw_drawing(pixels);
-}
-void canvas_t::set_canvas(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer)
+void canvas_t::update_canvas(color_t c, drawing_t _current_drawing, int t)
 {
 	current_drawing = _current_drawing;
-	height = _height;
-	width = _width;
-	bgd_color = _bgd_color;
-	pixels = buffer;
+	current_drawing.draw_drawing(c, t, pixels);
 }
 //--------------------------------

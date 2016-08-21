@@ -58,15 +58,19 @@ class line_t
 {
 private:
 	point_t Vi,Vf;
-	int thickness;
-	color_t color_line;
 public:
 	line_t();
-	line_t(point_t _Vi, point_t _Vf,int _thickness,color_t _color_line);
-	void set_line(point_t _Vi, point_t _Vf,int _thickness,color_t _color_line);
-	point_t get_start() {	return Vi;	}
-	point_t get_end()	{	return Vf;	}	
-	void draw_line(color_t **buffer);  
+	line_t(point_t _Vi, point_t _Vf);
+	void set_line(point_t _Vi, point_t _Vf);
+	point_t get_start()
+	{
+		return Vi;
+	}
+	point_t get_end()
+	{
+		return Vf;
+	}	
+	void draw_line(color_t c, int t, color_t **buffer);  //BRESSEN
 	
 };
 //-----------------------
@@ -81,28 +85,30 @@ private:
 public:
 	fill_t();
 	fill_t(color_t _curr_color, color_t _bnd_color);
-	void set_internal(point_t _internal) {	internal_point = _internal; }
-	color_t get_bg()	{	return bnd_color; }
-	color_t get_curr()	{	return curr_color; }
+	void set_internal(point_t _internal)
+	{	internal_point = _internal; }
+	color_t get_bg()
+	{	return bnd_color; }
+	color_t get_curr()
+	{	return curr_color; }
 	void set_bg(color_t _bnd_color);
 	void set_curr(color_t _curr_color);
-	void draw_fill(color_t **buffer);  
+	void draw_fill(color_t **buffer);  // may OPENGL be with us//
 	
-};
-//------------------------
+}
+;//------------------------
 class triangle_t
 {
 private:
-	int thickness;
 	point_t A,B,C;
 	color_t border_color;
 	fill_t triangle_interior;
 public:
 	triangle_t();
-	triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color,int _thickness);
+	triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color);
 	void set_internal_point_triangle(fill_t _triangle_interior);
-	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color,int _thickness);
-	void draw_triangle(color_t **buffer);
+	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color);
+	void draw_triangle(int t, color_t **buffer);
 };
 //------------------------
 class drawing_t
@@ -110,7 +116,7 @@ class drawing_t
 public:
 	vector<line_t> lines;
 	vector<triangle_t> triangles;
-	void draw_drawing(color_t **buffer);
+void draw_drawing(color_t c, int t, color_t **buffer);
 };
 //------------------------
 class canvas_t
@@ -122,11 +128,9 @@ private:
 	color_t **pixels;
 public:
 	void set_canvas(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer);
-	void clear_canvas();
+	void update_canvas(color_t c, drawing_t _current_drawing, int t);
 	color_t** get_buffer();
-	void add_triangle_to_drawing(triangle_t triangle) { current_drawing.triangles.push_back(triangle);}
-	void add_line_to_drawing(line_t line){ current_drawing.lines.push_back(line);}
-	void draw_current_drawing();
+	void clear_canvas();
 };
 //------------------------
 #endif
