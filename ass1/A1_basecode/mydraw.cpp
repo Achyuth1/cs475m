@@ -55,14 +55,47 @@ void reshape( int w, int h )
 //Keyboard callback
 void keyboard( unsigned char key, int x, int y ) {
   switch(key) {
+  
+  case 'N':
+  //intialize new canvas
+  //2D array to the background color
+  //backg color for the is input from terminal/file
+    break;
+  case 'C':
+    //clear the canvas
+    break;
+  case 'S':
+    //save into file
+    break;
+  case 'L':
+    //load from file
+    break;
+  case '1':
+    //line drawing mode
+    break;
+  case '2':
+    //triangle mode
+    break;
+  case 'F':
+    //fill triangle
+    break;
+  case 'G':
+    //change fill color
+    break;
+  case 'H':
+    //change pen color
+    break;
+  case 'I':
+    //change bgrd color
+    break;
+  case 'J':
+    //change pen width
+    break;
   //Exit on pressing escape
   case 27: 
     exit(0);
     break;
-    //Do something when 'C' is pressed
-  case 'C':
-    break;
-    //Ignore all other keypresses
+  //Ignore all other keypresses
   default:
     break;
   }

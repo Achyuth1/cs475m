@@ -1,0 +1,5 @@
+/tmp/ccB1CD56.o: In function `canvas_t::canvas_t()':
+mydraw_class.cpp:(.text+0x118b): undefined reference to `drawing_t::drawing_t()'
+/tmp/ccB1CD56.o: In function `canvas_t::canvas_t(drawing_t, int, int, color_t, color_t**)':
+mydraw_class.cpp:(.text+0x1286): undefined reference to `drawing_t::drawing_t()'
+collect2: error: ld returned 1 exit status

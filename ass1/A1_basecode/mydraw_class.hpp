@@ -1,6 +1,12 @@
 #ifndef _MYDRAW_CLASS_HPP_
 #define _MYDRAW_CLASS_HPP_
 
+
+#include "mydraw_class.hpp"
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+using namespace std;
 //Define all classes like the color class, adding appropriate methods and data members. 
 //Implementation of the methods go into the corresponding cpp file
 
@@ -35,22 +41,6 @@ public:
 	
 };
 //------------------------
-class fill_t
-{
-private:
-	color_t curr_color;
-	color_t bnd_color;
-	// may be boundarycolorneed to be passed
-public:
-	fill_t();
-	fill_t(color_t _curr_color, color_t _bnd_color);
-	void set_bg(color_t _bnd_color);
-	void set_curr(color_t _curr_color);
-	void draw_fill();  // may OPENGL be with us//
-	
-};
-//------------------------
-
 //point_t class
 class point_t {
 private:
@@ -83,7 +73,30 @@ public:
 	void draw_line(color_t c, int t, color_t **buffer);  //BRESSEN
 	
 };
-//------------------------
+//-----------------------
+//fill_t
+class fill_t
+{
+private:
+	point_t internal_point;
+	color_t curr_color;
+	color_t bnd_color;
+	
+public:
+	fill_t();
+	fill_t(color_t _curr_color, color_t _bnd_color);
+	void set_internal(point_t _internal)
+	{	internal_point = _internal; }
+	color_t get_bg()
+	{	return bnd_color; }
+	color_t get_curr()
+	{	return curr_color; }
+	void set_bg(color_t _bnd_color);
+	void set_curr(color_t _curr_color);
+	void draw_fill(color_t **buffer);  // may OPENGL be with us//
+	
+}
+;//------------------------
 class triangle_t
 {
 private:
@@ -92,19 +105,18 @@ private:
 	fill_t triangle_interior;
 public:
 	triangle_t();
-	triangle_t(point_t _A, point_t _B, point_t _C);
-	void set_triangle(point_t _A, point_t _B, point_t _C);
-	void draw_triangle(color_t c, int t, color_t **buffer);
+	triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color);
+	void set_internal_point_triangle(fill_t _triangle_interior);
+	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color);
+	void draw_triangle(int t, color_t **buffer);
 };
 //------------------------
 class drawing_t
 {
-private:
-	line_t *lines;
-	triangle_t *triangles;
 public:
-drawing_t();
-void draw_drawing();
+	vector<line_t> lines;
+	vector<triangle_t> triangles;
+void draw_drawing(color_t c, int t, color_t **buffer);
 };
 //------------------------
 class canvas_t
@@ -116,7 +128,7 @@ private:
 	color_t **pixels;
 public:
 	canvas_t();
-	canvas_t(drawing_t _current_drwaing, int h, int w, color_t BGcolor, color_t **pixels_1);
+	canvas_t(drawing_t _current_drwaing, int _height, int _width, color_t BGcolor, color_t **pixels_1);
 	void clear_canvas();
 };
 //------------------------

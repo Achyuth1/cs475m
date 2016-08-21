@@ -1,6 +1,7 @@
 #include "mydraw_class.hpp"
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 void swap (int &x, int &y)
@@ -76,12 +77,31 @@ void fill_t::set_curr(color_t _curr_color){
 	curr_color = _curr_color;
 }
 
-void fill_t::draw_fill()
+
+void floodFill(int x,int y, color_t oldColor, color_t newColor,color_t **buffer) 
 {
-	// may OPENGL be with us//
-	//have to fill the code
-}  
-//---------------------
+	color_t color = buffer[x][y];
+
+	if(color.R() == oldColor.R() && color.G() == oldColor.G() && color.B() == oldColor.B())
+	{
+		buffer[x][y] = newColor;
+		floodFill(x+1, y, oldColor, newColor,buffer);
+		floodFill(x, y+1, oldColor, newColor,buffer);
+		floodFill(x-1, y, oldColor, newColor,buffer);
+		floodFill(x, y-1, oldColor, newColor,buffer);
+	}
+	return;
+}
+
+void fill_t::draw_fill(color_t **buffer)
+{
+	int x = internal_point.get_x();
+	int y = internal_point.get_y();
+	color_t oldColor = this->get_bg();
+	color_t newColor = this->get_curr();
+	floodFill(x,y,oldColor,newColor,buffer);
+}
+//-----------------------------------------
 //point_t methods
 
 point_t::point_t()
@@ -211,41 +231,77 @@ triangle_t::triangle_t()
 	B = c;
 	C = c;
 }
-triangle_t::triangle_t(point_t _A, point_t _B, point_t _C)
+triangle_t::triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color)
 {
 	A = _A;
 	B = _B;
 	C = _C;
+	border_color = _border_color;
 }
-void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C)
+void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color)
 {
 	A = _A;
 	B = _B;
 	C = _C;
+	border_color = _border_color;
 }	
-void triangle_t::draw_triangle(color_t c, int t, color_t **buffer)
+
+void triangle_t::set_internal_point_triangle(fill_t _triangle_interior)
 {
-	line_t AB(A,B);	
-	AB.draw_line(c, t, buffer);
-//	cout<<"1"<<endl;
+	triangle_interior = _triangle_interior;
+}
+
+
+
+void triangle_t::draw_triangle(int t, color_t **buffer)
+{
+
+	fill_t intern;
+	line_t AB(A,B);
+	AB.draw_line(border_color, t, buffer);
 	
 	line_t BC(B,C);
-	BC.draw_line(c, t, buffer);
-//	cout << "2" <<endl;
+	BC.draw_line(border_color, t, buffer);
 
 	line_t CA(C,A);
-	CA.draw_line(c, t, buffer);
-//	cout<<"3"<<endl;	
+	CA.draw_line(border_color, t, buffer);	
+
+	// Setting the internal point 
+	point_t centroid;
+	int sum_x = A.get_x() + B.get_x() + C.get_x();
+	int sum_y = A.get_y() + B.get_y() + C.get_y();
+	centroid.set_point(sum_x/3,sum_y/3);
+	intern.set_internal(centroid);
+	
+	//Setting the  color to be filled with
+	color_t green(0.0,1.0,0.0);
+	intern.set_curr(green);
+
+	//Setting the background color
+	color_t white(1.0,1.0,1.0);				// Later, we should put the bg color
+	intern.set_bg(white);
+
+	//Setting the fill parameters into the triangle
+	set_internal_point_triangle(intern);
+	
+	//Calling the floodfill function
+	triangle_interior.draw_fill(buffer);
 }
 //--------------------------------
 //drawing_t
-drawing_t::drawing_t()
-{
 
-}
-void drawing_t::draw_drawing()
+//vector<line_t> lines;
+//vector<triangle_t> triangles;
+void drawing_t::draw_drawing(color_t c, int t, color_t **buffer)
 {
-
+	for (int i = 0; i < lines.size(); ++i)
+	{
+		lines[i].draw_line(c, t, buffer);
+	}
+	for (int i = 0; i < lines.size(); ++i)
+	{
+		triangles[i].draw_triangle(t, buffer);
+	}
 }
 //--------------------------------
 //canvas
@@ -263,15 +319,15 @@ canvas_t::canvas_t()
 		}
 	}
 }
-canvas_t::canvas_t(drawing_t _current_drawing, int h, int w, color_t BGcolor, color_t **pixels_1)
+canvas_t::canvas_t(drawing_t _current_drawing, int _height, int _width, color_t BGcolor, color_t **pixels_1)
 {
 	current_drawing = _current_drawing;
-	height = h;
-	width = w;
+	height = _height;
+	width = _width;
 	bgd_color = BGcolor;
-	for (int i = 0; i < 512; ++i)
+	for (int i = 0; i < _height; ++i)
 	{
-		for (int j = 0; j < 512; ++j)
+		for (int j = 0; j < _width; ++j)
 		{
 			pixels[i][j] = pixels_1[i][j];
 		}
@@ -279,9 +335,9 @@ canvas_t::canvas_t(drawing_t _current_drawing, int h, int w, color_t BGcolor, co
 }
 void canvas_t::clear_canvas()
 {
-	for (int i = 0; i < 512; ++i)
+	for (int i = 0; i < height; ++i)
 	{
-		for (int j = 0; j < 512; ++j)
+		for (int j = 0; j < width; ++j)
 		{
 			pixels[i][j] = bgd_color;	
 		}
