@@ -29,7 +29,7 @@ public:
 class pen_t
 {
 private:
-	float size;
+	int thickness;
 	bool mode;
 	//Bckround color should be added?!
 	color_t pen_color;
@@ -39,6 +39,16 @@ public:
 	pen_t(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
 	void set(const int _size, const bool _mode, color_t pen_c, color_t bg_c);
 	
+	void set_b_c(color_t _bgd_color);
+	void set_p_c(color_t _pen_color);
+	void set_mode(bool _mode);
+	void set_thickness(int _thickness);
+
+	color_t get_b_c();
+	color_t get_p_c();
+	bool get_mode();
+	int get_thickness();
+		
 };
 //------------------------
 //point_t class
@@ -104,6 +114,7 @@ public:
 	void set_internal_point_triangle();
 	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color,color_t _fill_color, int _thickness,bool flag);
 	void draw_triangle(color_t **buffer);
+	void set_fill_flag(bool flag);
 	point_t get_1();
 	point_t get_2();
 	point_t get_3();
@@ -138,6 +149,9 @@ public:
 	triangle_t pop_triangle_from_drawing(void);
 	void draw_current_drawing();
 	void set_bgd_color(color_t _bgd_color);
+	void change_fill_color(color_t _fill_color, bool flag);
+	void clear_lines();
+	void clear_triangles();
 };
 //------------------------
 #endif

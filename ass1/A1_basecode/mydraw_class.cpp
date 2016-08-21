@@ -33,13 +33,13 @@ float color_t::B(void) { return b; }
 
 pen_t::pen_t()
 {
-	size = 1;
+	thickness = 1;
 	mode = true;
 }
 
 pen_t::pen_t(const int _size, const bool _mode, color_t pen_c, color_t bg_c)
 {
-	size = _size;
+	thickness = _size;
 	mode = _mode;
 	bgd_color = bg_c;
 	pen_color = pen_c;
@@ -47,11 +47,43 @@ pen_t::pen_t(const int _size, const bool _mode, color_t pen_c, color_t bg_c)
 
 void pen_t::set(const int _size, const bool _mode, color_t pen_c, color_t bg_c)
 {
-	size = _size;
+	thickness = _size;
 	mode = _mode;
 	bgd_color = bg_c;
 	pen_color = pen_c;
 	return;
+}
+color_t pen_t::get_b_c()
+{
+	return bgd_color;
+}
+color_t pen_t::get_p_c()
+{
+	return pen_color;
+}
+bool pen_t::get_mode()
+{
+	return mode;
+}
+int pen_t::get_thickness()
+{
+	return thickness;
+}
+void pen_t::set_mode(bool _mode)
+{
+	mode = _mode;
+}
+void pen_t::set_b_c(color_t _bgd_color)
+{
+	bgd_color = _bgd_color;
+}
+void pen_t::set_p_c(color_t _pen_color)
+{
+	pen_color = _pen_color;
+}
+void pen_t::set_thickness(int _thickness)
+{
+	thickness - _thickness;
 }
 
 //---------------------
@@ -254,7 +286,10 @@ void triangle_t::set_triangle(point_t _A, point_t _B, point_t _C,color_t _border
 	triangle_interior.set_fill_color(_fill_color);
 	fill_or_no = flag;
 }	
-
+void triangle_t::set_fill_flag(bool flag)
+{
+	fill_or_no = flag;
+}
 void triangle_t::set_internal_point_triangle()
 {
 	// finding the centroid and setting it as the internal point
@@ -323,7 +358,7 @@ void drawing_t::draw_drawing(color_t **buffer)
 // canvas_t
 canvas_t::canvas_t()
 {
-	
+
 }
 canvas_t::canvas_t(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer)
 {
@@ -394,7 +429,6 @@ void canvas_t::set_canvas(drawing_t _current_drawing, int _height, int _width, c
 }
 void canvas_t::set_bgd_color(color_t _bgd_color)
 {
-
 	//Changing the buffer 
 	for (int i = 0; i < height; ++i)
 		for (int j = 0; j < width; ++j)
@@ -405,5 +439,22 @@ void canvas_t::set_bgd_color(color_t _bgd_color)
 	bgd_color = _bgd_color;
 
 	current_drawing.change_background(_bgd_color);
+}
+void canvas_t::change_fill_color(color_t _fill_color, bool flag)
+{
+	int s = current_drawing.triangles.size();
+	if(s != 0)
+	{
+		current_drawing.triangles[s-1].triangle_interior.set_fill_color(_fill_color);
+		current_drawing.triangles[s-1].set_fill_flag(flag);
+	}
+}
+void canvas_t::clear_lines()
+{
+	current_drawing.lines.clear();
+}
+void canvas_t::clear_triangles()
+{
+	current_drawing.lines.clear();
 }
 //--------------------------------
