@@ -298,40 +298,32 @@ void drawing_t::draw_drawing(color_t c, int t, color_t **buffer)
 	{
 		lines[i].draw_line(c, t, buffer);
 	}
-	for (int i = 0; i < lines.size(); ++i)
+	for (int i = 0; i < triangles.size(); ++i)
 	{
 		triangles[i].draw_triangle(t, buffer);
 	}
 }
 //--------------------------------
 //canvas
-canvas_t::canvas_t()
+/*canvas_t::canvas_t()
 {
-	color_t c;
 	height = 512;
 	width = 512;
-	bgd_color = c;
-	for (int i = 0; i < 512; ++i)
-	{
-		for (int j = 0; j < 512; ++j)
-		{
-			pixels[i][j] = c;
-		}
+	color_t** buffer = new color_t*[height];
+	for(int i = 0; i < height; ++i)
+	{	
+    	buffer[i] = new color_t[width];
 	}
-}
-canvas_t::canvas_t(drawing_t _current_drawing, int _height, int _width, color_t BGcolor, color_t **pixels_1)
+	bgd_color.set(0.0,0.0,0.0);
+	pixels = buffer;
+}*/
+canvas_t::canvas_t(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer)
 {
 	current_drawing = _current_drawing;
 	height = _height;
 	width = _width;
-	bgd_color = BGcolor;
-	for (int i = 0; i < _height; ++i)
-	{
-		for (int j = 0; j < _width; ++j)
-		{
-			pixels[i][j] = pixels_1[i][j];
-		}
-	}	
+	bgd_color = _bgd_color;
+	pixels = buffer;
 }
 void canvas_t::clear_canvas()
 {
@@ -342,5 +334,10 @@ void canvas_t::clear_canvas()
 			pixels[i][j] = bgd_color;	
 		}
 	}	
+}
+void canvas_t::update_canvas(color_t c, drawing_t _current_drawing, int t)
+{
+	current_drawing = _current_drawing;
+	current_drawing.draw_drawing(c, t, pixels);
 }
 //--------------------------------

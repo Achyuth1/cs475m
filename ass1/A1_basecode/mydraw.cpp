@@ -104,13 +104,13 @@ void keyboard( unsigned char key, int x, int y ) {
 //Mouse callback
 void mouse(int button, int state, int x, int y) 
 {
-   if (state == GLUT_DOWN) 
-     {
-       if (button == GLUT_LEFT_BUTTON) 
-	 {
-	   //Do something when the left mouse button is clicked
-	 }
-     }
+  if (state == GLUT_DOWN) 
+  {
+    if (button == GLUT_LEFT_BUTTON)
+    {
+      cout<<"button clicked"<<endl<<endl;
+    }
+  }
    glutPostRedisplay();
 }       
 

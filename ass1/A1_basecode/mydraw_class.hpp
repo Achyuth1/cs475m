@@ -127,8 +127,8 @@ private:
 	color_t bgd_color;
 	color_t **pixels;
 public:
-	canvas_t();
-	canvas_t(drawing_t _current_drwaing, int _height, int _width, color_t BGcolor, color_t **pixels_1);
+	canvas_t(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer);
+	void update_canvas(color_t c, drawing_t _current_drawing, int t);
 	void clear_canvas();
 };
 //------------------------
