@@ -4,9 +4,6 @@
  *Achyutha Krishna
  *Athul AR
  *
- *May the force be with us
- *May the openGL also be with us 
- *
  *******************************/
 
 
@@ -19,19 +16,35 @@
 using namespace std;
 
 //unsigned
-unsigned int W = 100;
-unsigned int H = 100;
+unsigned int W = 512;
+unsigned int H = 512;
 canvas_t my_canvas;
+
+//boolean value
+bool draw_mode=0; // 0 means line; 1 means triangle
+bool fill_flag=0; //o means dont fill
 
 color_t green(0.0,1.0,0.0);
 color_t red(1.0,0.0,0.0);
 color_t blue(0.0,0.0,1.0);
 color_t b_c(1.0,1.0,1.0);
-color_t d_c(1.0,1.0,0.0);
+color_t d_c(0.0,0.0,0.0);
+color_t f_c(1.0,0.0,0.0);
+
+int thickness = 1;
+
+//points from mouse clicks
+vector<point_t> line_pts;
+vector<point_t> triangle_pts;
+int total_lines;
+int total_triangles;
 
 //Display callback
 void display( )
 {
+  my_canvas.set_bgd_color(b_c);
+  my_canvas.draw_current_drawing();
+  fill_flag =0;
   glClearColor( 0, 0, 0, 1 );
   glClear( GL_COLOR_BUFFER_BIT );
   color_t** buffer;   
@@ -89,12 +102,15 @@ void keyboard( unsigned char key, int x, int y ) {
     break;
   case '1':
     //line drawing mode
+    draw_mode = 0;
     break;
   case '2':
     //triangle mode
+    draw_mode = 1;
     break;
   case 'F':
     //fill triangle
+    fill_flag = 1;
     break;
   case 'G':
     //change fill color
@@ -124,16 +140,95 @@ void mouse(int button, int state, int x, int y)
 {
   int _x = x;
   int _y = H-y;
+  
+  point_t temp_point;
+  line_t temp_line;
+  triangle_t temp_triangle;
+
   if (state == GLUT_DOWN) 
   {
     if (button == GLUT_LEFT_BUTTON)
     {
-      cout<<"button clicked"<<endl<<endl;
-      cout<<"x ::"<< _x <<endl;
-      cout<<"y ::"<< _y <<endl;
+
+      temp_point.set_point(_x,_y);
+      if (!draw_mode)
+      { 
+        line_pts.push_back(temp_point);
+        if(line_pts.size()==2)
+        {
+          temp_line.set_line(line_pts[0],line_pts[1], thickness, d_c);
+          my_canvas.add_line_to_drawing(temp_line);
+          total_lines = total_lines + 1;
+        }    
+      }
+      else
+      {
+        triangle_pts.push_back(temp_point);
+        if(triangle_pts.size()==3)
+        {
+          temp_triangle.set_triangle(triangle_pts[0],triangle_pts[1],triangle_pts[2],d_c,f_c,thickness,fill_flag);
+          my_canvas.add_triangle_to_drawing(temp_triangle);
+          total_triangles = total_triangles + 1;
+        }  
+      }
+      if(line_pts.size()==2)
+      {
+        line_pts[0]=line_pts[1];
+        line_pts.pop_back();
+      }
+      if(triangle_pts.size()==3)
+      {
+        triangle_pts[0]=triangle_pts[1];
+        triangle_pts[1]=triangle_pts[2];
+        triangle_pts.pop_back();
+      }
+    }
+    if (button == GLUT_RIGHT_BUTTON)
+    {
+      if (!draw_mode)
+      {
+        if(total_lines!=0)
+        {
+          total_lines = total_lines-1;
+          cout<<total_lines<<endl;
+          temp_line = my_canvas.pop_line_from_drawing();
+          line_pts.clear();
+          line_pts.push_back(temp_line.get_start());
+          line_pts.push_back(temp_line.get_end());
+          my_canvas.clear_canvas();
+        }
+        if(total_lines==0)
+        {
+          if(line_pts.size()!=0)
+          {
+            line_pts.pop_back();
+          }
+        }
+      }
+      else
+      {
+        if(total_triangles!=0)
+        {
+          total_triangles = total_triangles-1;
+          cout<<total_triangles<<endl;
+          temp_triangle = my_canvas.pop_triangle_from_drawing();
+          triangle_pts.clear();
+          triangle_pts.push_back(temp_triangle.get_1());
+          triangle_pts.push_back(temp_triangle.get_2());
+          triangle_pts.push_back(temp_triangle.get_3());
+          my_canvas.clear_canvas();
+        }
+        if(total_triangles==0)
+        {
+          if(triangle_pts.size()!=0)
+          {
+            triangle_pts.pop_back();
+          }
+        }
+      }
     }
   }
-   glutPostRedisplay();
+  glutPostRedisplay();
 } 
 
 int main (int argc, char *argv[]) 
@@ -148,27 +243,7 @@ int main (int argc, char *argv[])
   }
 
   my_canvas.set_canvas(my_drawing, H, W, b_c, buffer);
-
-  point_t a(50,50);
-  point_t b(10,10);
-  point_t c(10,50);
-  point_t d(50,10);
-
-  line_t ab(a,b,t,d_c);
-  line_t cd(c,d,t,d_c);
-
-  triangle_t abc(a,b,c,red,t);
-  triangle_t bcd(b,c,d,blue,t);
-
-
   my_canvas.clear_canvas();
-
-  my_canvas.add_line_to_drawing(ab);
-  my_canvas.add_line_to_drawing(cd);
-  my_canvas.add_triangle_to_drawing(abc);
-  my_canvas.add_triangle_to_drawing(bcd);
-
-  my_canvas.draw_current_drawing();
 
   glutInit( &argc, argv );
   glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );

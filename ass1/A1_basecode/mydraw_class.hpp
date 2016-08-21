@@ -85,7 +85,7 @@ public:
 	color_t get_bg()	{	return bnd_color; }
 	color_t get_curr()	{	return curr_color; }
 	void set_bg(color_t _bnd_color);
-	void set_curr(color_t _curr_color);
+	void set_fill_color(color_t _curr_color);
 	void draw_fill(color_t **buffer);  
 	
 };
@@ -96,13 +96,17 @@ private:
 	int thickness;
 	point_t A,B,C;
 	color_t border_color;
-	fill_t triangle_interior;
+	bool fill_or_no;
 public:
+	fill_t triangle_interior;   //public variable
 	triangle_t();
-	triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color,int _thickness);
-	void set_internal_point_triangle(fill_t _triangle_interior);
-	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color,int _thickness);
+	triangle_t(point_t _A, point_t _B, point_t _C, color_t _border_color,color_t _fill_color, int _thickness,bool flag);
+	void set_internal_point_triangle();
+	void set_triangle(point_t _A, point_t _B, point_t _C,color_t _border_color,color_t _fill_color, int _thickness,bool flag);
 	void draw_triangle(color_t **buffer);
+	point_t get_1();
+	point_t get_2();
+	point_t get_3();
 };
 //------------------------
 class drawing_t
@@ -110,7 +114,9 @@ class drawing_t
 public:
 	vector<line_t> lines;
 	vector<triangle_t> triangles;
+	color_t background_color;
 	void draw_drawing(color_t **buffer);
+	void change_background(color_t _bgd_color);
 };
 //------------------------
 class canvas_t
@@ -121,12 +127,17 @@ private:
 	color_t bgd_color;
 	color_t **pixels;
 public:
+	canvas_t();
+	canvas_t(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer);
 	void set_canvas(drawing_t _current_drawing, int _height, int _width, color_t _bgd_color, color_t **buffer);
 	void clear_canvas();
 	color_t** get_buffer();
-	void add_triangle_to_drawing(triangle_t triangle) { current_drawing.triangles.push_back(triangle);}
-	void add_line_to_drawing(line_t line){ current_drawing.lines.push_back(line);}
+	void add_triangle_to_drawing(triangle_t triangle); 
+	void add_line_to_drawing(line_t line);
+	line_t pop_line_from_drawing(void);
+	triangle_t pop_triangle_from_drawing(void);
 	void draw_current_drawing();
+	void set_bgd_color(color_t _bgd_color);
 };
 //------------------------
 #endif
