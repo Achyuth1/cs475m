@@ -1,5 +1,0 @@
-mydraw.cpp: In function ‘void load_globals()’:
-mydraw.cpp:76:10: error: ‘Fmyfile’ was not declared in this scope
-   while(!Fmyfile.eof())
-          ^
-make: *** [mydraw] Error 1
